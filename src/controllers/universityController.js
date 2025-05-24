@@ -19,7 +19,7 @@ exports.getAllUniversities = async (req, res) => {
       return {
         alpha_two_code: plainUni.alpha_two_code,
         country: plainUni.country,
-        'state-province': plainUni.state_province,
+        state_province: plainUni.state_province,
         domains: plainUni.domains.map(d => d.domain),
         name: plainUni.name,
         web_pages: plainUni.web_pages.map(w => w.url)

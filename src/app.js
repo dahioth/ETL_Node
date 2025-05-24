@@ -34,6 +34,14 @@ const initializeApp = async () => {
     await sequelize.sync();
     console.log('Database synchronized successfully');
     
+    // Initial data load
+    console.log('Running initial ETL process...');
+    await etlService.runETLProcess();
+    
+    // Start scheduler
+    console.log('Starting scheduler...');
+    schedulerService.startScheduler();
+    
     // Start server
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);

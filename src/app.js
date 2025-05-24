@@ -1,5 +1,8 @@
 const express = require('express');
+const { sequelize, testConnection } = require('./config/database');
 const universityRoutes = require('./routes/universityRoutes');
+const etlService = require('./services/etlService');
+const schedulerService = require('./services/schedulerService');
 
 // Create Express app
 const app = express();
@@ -22,7 +25,24 @@ app.get('/', (req, res) => {
   });
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+const initializeApp = async () => {
+  try {
+    // Test database connection
+    await testConnection();
+    
+    // Sync database models
+    await sequelize.sync();
+    console.log('Database synchronized successfully');
+    
+    // Start server
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to initialize application:', error);
+    process.exit(1);
+  }
+};
+
+// Start the application
+initializeApp(); 
